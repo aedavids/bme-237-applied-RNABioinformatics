@@ -27,7 +27,18 @@ $ export HISAT2_HOME=/hb/software/apps/hisat2/gnu-2.1.0
 
 Download the GENCODE v37 human gene annotation and genome reference
 ```
-ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_37/gencode.v37.annotation.gtf.gz
+wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_37/gencode.v37.annotation.gtf.gz
 
-ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_37/GRCh38.p13.genome.fa.gz
+wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_37/GRCh38.p13.genome.fa.gz
+```
+
+Use the ENCODE data portal (https://www.encodeproject.org (Links to an external site.)) to find the FASTQ files from mRNA sequencing of lung fibroblast primary cells. This was a paired-end library with 76bp reads. Download the data corresponding to biological replicate 1, i.e., accessions: ENCFF000IJA (read 1) and ENCFF000IJH (read 2).
+
+[https://www.encodeproject.org/files/ENCFF000IJA/](https://www.encodeproject.org/files/ENCFF000IJA/)
+
+[https://www.encodeproject.org/files/ENCFF000IJH/](https://www.encodeproject.org/files/ENCFF000IJH/)
+```
+wget https://www.encodeproject.org/files/ENCFF000IJA/@@download/ENCFF000IJA.fastq.gz
+
+wget https://www.encodeproject.org/files/ENCFF000IJH/@@download/ENCFF000IJH.fastq.gz
 ```
