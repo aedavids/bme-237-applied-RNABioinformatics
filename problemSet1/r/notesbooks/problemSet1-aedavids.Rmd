@@ -1,0 +1,49 @@
+---
+title: "BME-237 problem set 1 question 2"
+author: "Andy Davidson"
+date: "4/1/2"
+output:
+  html_document:
+    df_print: paged
+email: aedavids@ucsc.edu
+---
+
+Use the ToothGrowth R (Links to an external site.) dataset and the ggplot2 package to create a violin plot comparing the tooth lengths of guinea pigs given orange juice (OJ) versus ascorbic acid (VC). Include individual points using geom_jitter. Examples using a different dataset can be found here: [https://ggplot2.tidyverse.org/reference/geom_violin.html](https://ggplot2.tidyverse.org/reference/geom_violin.html)
+
+```{r}
+library(ggplot2) 
+```
+
+```{r}
+data(ToothGrowth)
+head(ToothGrowth)
+```
+
+```{r}
+str(ToothGrowth)
+```
+
+
+```{r}
+p <- ggplot(ToothGrowth, aes(fill=supp, supp, len))
+p + geom_violin() + geom_jitter(height = 0, width = 0.1) 
+```
+
+
+
+
+```{r}
+ggsave(
+  "problemSet1Question2-aedavids.pdf",
+  plot=last_plot(),
+  device="pdf",
+  dpi=300
+)
+```
+
+
+```{r}
+p <- ggplot(ToothGrowth, aes(fill=supp, supp, dose))
+p + geom_violin() + geom_jitter(height = 0, width = 0.1) 
+#
+```
