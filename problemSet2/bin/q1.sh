@@ -44,9 +44,9 @@ do
     for f1 in `ls *_1.fastq`;
     do
 	# echo SRR493373_1.fastq | sed -e 's/_1/_2/'
-	f2=`echo $f1 |  | sed -e 's/_1/_2/'
-	accession=`echo $f1 | cut -f 1 -d '_'`
-	hisat2 -p 12 \
+	f2=`echo $f1 |  | sed -e 's/_1/_2/' `
+	accession=`echo $f1 | cut -f 1 -d '_' `
+	echo hisat2 -p 12 \
 		 -x data/hisat2.GRCh38.index/GRCh38.p13.genome \
 		 -1 $f1  \
 		 -2 $f2 \
