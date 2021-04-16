@@ -43,20 +43,22 @@ do
 
     for f1 in `ls *_1.fastq`;
     do
+	echo "\n\n-----------------------"
 	# echo SRR493373_1.fastq | sed -e 's/_1/_2/'
 	f2=`echo $f1 |  | sed -e 's/_1/_2/' `
 	accession=`echo $f1 | cut -f 1 -d '_' `
-	echo hisat2 -p 12 \
-		 -x data/hisat2.GRCh38.index/GRCh38.p13.genome \
-		 -1 $f1  \
-		 -2 $f2 \
-		 -S "hisat2.GRCh38.${accession}.sam" \
-		 --known-splicesite-infile $spliceSites
+	hisat2Out="hisat2.GRCh38.${accession}.sam"
+
+	if [ ! -f $hisat2Out ]; then
+	    echo hisat2 -p 12 \
+			-x data/hisat2.GRCh38.index/GRCh38.p13.genome \
+			-1 $f1  \
+			-2 $f2 \
+			-S $hisat2Out \
+			--known-splicesite-infile $spliceSites
+	else 
+	    echo skipping $hisat2Out it already exists
+	fi
     done
 done
 
-/hb/home/aedavids/bme-237-applied-RNABioinformatics/problemSet2/data/reads
-
-controls/  HOXA1_KD/
-
-.fastq
