@@ -3,7 +3,7 @@
 #SBATCH -J ps2.q1        # Job name
 #SBATCH --mail-user=aedavids@ucsc.edu
 #SBATCH --mail-type=ALL
-#SBATCH -o job%.j.out    # Name of stdout output file
+#SBATCH -o job%.j.q1.sh.out    # Name of stdout output file
 #SBATCH -N 2        # Total number of nodes requested (128x24/Instructional only)
 #SBATCH -n 16        # Total number of mpi tasks requested per node
 #SBATCH -t 04:00:00  # Run Time (hh:mm:ss) - 4 hours (optional)
@@ -25,6 +25,7 @@
 set -x
 module load hisat/hisat2-2.1.0
 
+module load samtools/samtools-1.10
 
 hisat2IdxDir=/hb/home/aedavids/bme-237-applied-RNABioinformatics/problemSet1/data/hisat2.GRCh38.index
 hisat2Idx="${hisat2IdxDir}/GRCh38.p13.genome"
@@ -44,6 +45,7 @@ do
 	f2=`echo $f1 | sed -e 's/_1/_2/' `
 	accession=`echo $f1 | cut -f 1 -d '_' `
 	hisat2Out="hisat2.GRCh38.${accession}.sam"
+	sortedSamOut=`echo $hisat2Out | sed -e 's/\.sam/\.sorted.sam/' `
 
 	if [ ! -f $hisat2Out ]; then
 	    hisat2 -p 12 \
@@ -52,9 +54,40 @@ do
 			-2 $f2 \
 			-S $hisat2Out \
 			--known-splicesite-infile $spliceSites
+
+	    # make sure we recompute sorted sam file
+	    'rm' $sortedSamOut
 	else 
 	    echo skipping $hisat2Out it already exists
 	fi
+
+
+	# htseq-count reqires paired reads to be sort
+	if [ -f $hisat2Out -a ! -f $sortedSamOut ]; then
+	    samtools sort \
+		-@ 10 \
+		--output-fmt SAM \
+		-o $sortedSamOut \
+		$hisat2Out
+		
+	else
+	    echo skipping $sortedSamOut it already exists or $hisat2Out is missing
+	fi
+
+       
+	htseqCountOut="htseq-count.GRCh38.${accession}.out"
+	if [ -f $sortedSamOut -a ! -f $htseqCountOut ]; then
+	    # htseq-count requires paired reads to be sorted
+	    echo htseq-count \
+		-r pos \
+		$sortedSamOut \
+		$ gtf aewip \
+		> $htseqCountOut
+		
+	else
+	    echo skipping $htseqCountOut it already exists or $sortedSamOut is missing
+	fi
+
     done
 done
 
