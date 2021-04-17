@@ -27,11 +27,14 @@ module load hisat/hisat2-2.1.0
 
 module load samtools/samtools-1.10
 
+# reference files
+gtf=/hb/home/aedavids/bme-237-applied-RNABioinformatics/problemSet1/data/gencode.v37.annotation.gtf
 hisat2IdxDir=/hb/home/aedavids/bme-237-applied-RNABioinformatics/problemSet1/data/hisat2.GRCh38.index
 hisat2Idx="${hisat2IdxDir}/GRCh38.p13.genome"
 spliceSites=/hb/home/aedavids/bme-237-applied-RNABioinformatics/problemSet1/data/hisat2.splicesites.txt
 
 rootReadDir=/hb/home/aedavids/bme-237-applied-RNABioinformatics/problemSet2/data/reads
+
 
 replicates="controls HOXA1_KD"
 for p in $replicates;
@@ -78,10 +81,10 @@ do
 	htseqCountOut="htseq-count.GRCh38.${accession}.out"
 	if [ -f $sortedSamOut -a ! -f $htseqCountOut ]; then
 	    # htseq-count requires paired reads to be sorted
-	    echo htseq-count \
+	    htseq-count \
 		-r pos \
 		$sortedSamOut \
-		$ gtf aewip \
+		$gtf \
 		> $htseqCountOut
 		
 	else
