@@ -1,9 +1,5 @@
 #!/bin/bash
-
-
-
-
-#SBATCH -p 128×24 # max nodes = 3, Intel nodes 128GBs / 2 x 12 cores# Instruction   # Partition name
+#SBATCH -p Instruction #128×24 # max nodes = 3, Intel nodes 128GBs / 2 x 12 cores# Instruction   # Partition name
 #SBATCH -J ps2.q1        # Job name
 #SBATCH --mail-user=aedavids@ucsc.edu
 #SBATCH --mail-type=ALL
@@ -31,6 +27,7 @@ module load hisat/hisat2-2.1.0
 
 
 hisat2IdxDir=/hb/home/aedavids/bme-237-applied-RNABioinformatics/problemSet1/data/hisat2.GRCh38.index
+hisat2Idx="${hisat2IdxDir}/GRCh38.p13.genome"
 spliceSites=/hb/home/aedavids/bme-237-applied-RNABioinformatics/problemSet1/data/hisat2.splicesites.txt
 
 rootReadDir=/hb/home/aedavids/bme-237-applied-RNABioinformatics/problemSet2/data/reads
@@ -42,15 +39,15 @@ do
 
     for f1 in `ls *_1.fastq`;
     do
-	echo "\n\n-----------------------"
+	printf "\n\n-----------------------\n"
 	# echo SRR493373_1.fastq | sed -e 's/_1/_2/'
-	f2=`echo $f1 |  | sed -e 's/_1/_2/' `
+	f2=`echo $f1 | sed -e 's/_1/_2/' `
 	accession=`echo $f1 | cut -f 1 -d '_' `
 	hisat2Out="hisat2.GRCh38.${accession}.sam"
 
 	if [ ! -f $hisat2Out ]; then
-	    echo hisat2 -p 12 \
-			-x data/hisat2.GRCh38.index/GRCh38.p13.genome \
+	    hisat2 -p 12 \
+			-x $hisat2Idx \
 			-1 $f1  \
 			-2 $f2 \
 			-S $hisat2Out \
