@@ -1,10 +1,9 @@
 #!/bin/bash
 
-aedwip I think we do not want to use Instruction partion the limit is 4 hrs
-we should 256x44 or 128x24, it is ?infinite?
 
 
-#SBATCH -p Instruction   # Partition name
+
+#SBATCH -p 128×24 # max nodes = 3, Intel nodes 128GBs / 2 x 12 cores# Instruction   # Partition name
 #SBATCH -J ps2.q1        # Job name
 #SBATCH --mail-user=aedavids@ucsc.edu
 #SBATCH --mail-type=ALL
@@ -18,7 +17,7 @@ we should 256x44 or 128x24, it is ?infinite?
 # ref: 
 # https://support.ceci-hpc.be/doc/_contents/QuickStart/SubmittingJobs/SlurmTutorial.html
 # Creating SBATCH Scripts for use with the job schedule https://www.hb.ucsc.edu/getting-started/
-
+# partitions https://hummingbird.ucsc.edu/documentation/hummingbird-hardware-configurations/
 
 #
 # BME 237: Applied RNA Bioinformatics problem set 2 questions 1
