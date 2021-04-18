@@ -3,10 +3,16 @@ title: "problemSet2-DESeq2-aedavids.Rmd"
 output: html_notebook
 ---
 
+Questions 2) Use DESeq2 to perform differential gene expression analysis comparing control replicates versus HOXA1 KD replicates. 
+
 ref:
 -[https://bioconductor.org/packages/release/bioc/html/DESeq2.html](https://bioconductor.org/packages/release/bioc/html/DESeq2.html)
 - [DESeq2 vignettes](http://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#pre-filtering)
 - [DESeqDataSetFromHTSeqCount](https://www.rdocumentation.org/packages/DESeq/versions/1.24.0/topics/DESeqDataSet-class)
+
+```{r}
+library("DESeq2")
+```
 
 ```{r}
 directory <- "/Users/andrewdavidson/googleUCSC/bme-237-appliedRNABioinformatics/homework/problemSet2/data/reads/htseq-counts.out"
@@ -61,5 +67,14 @@ sampleTable <- data.frame(sampleName = sampleNamesVec,
 sampleTable$condition <- factor(sampleTable$condition)
 
 sampleTable
+```
+
+
+## create the DESeqDataSet
+```{r}
+ddsHTSeq <- DESeqDataSetFromHTSeqCount(sampleTable, 
+                                  directory, 
+                                  design = ~ condition)
+ddsHTSeq
 ```
 
