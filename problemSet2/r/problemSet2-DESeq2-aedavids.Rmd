@@ -1,0 +1,17 @@
+---
+title: "problemSet2-DESeq2-aedavids.Rmd"
+output: html_notebook
+---
+
+ref:
+-[https://bioconductor.org/packages/release/bioc/html/DESeq2.html](https://bioconductor.org/packages/release/bioc/html/DESeq2.html)
+- [DESeq2 vignettes](http://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#pre-filtering)
+- [DESeqDataSetFromHTSeqCount](https://www.rdocumentation.org/packages/DESeq/versions/1.24.0/topics/DESeqDataSet-class)
+
+```{r}
+directory <- "/Users/andrewdavidson/googleUCSC/bme-237-appliedRNABioinformatics/homework/problemSet2/data"
+directory <- "/Users/andrewdavidson/googleUCSC/bme-237-appliedRNABioinformatics/homework/problemSet2/data/reads/htseq-counts.out"
+d <- list.files(directory)
+d
+```
+
