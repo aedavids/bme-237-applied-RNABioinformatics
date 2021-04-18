@@ -22,6 +22,8 @@ sampleFilesList
 # print( treatment)
 ```
 
+## create the sampleTable. 
+you can add additional columns if you have more meta data
 ```{r}
 # pre allocate list, this is faster than append
 n <- length(sampleFilesList)
