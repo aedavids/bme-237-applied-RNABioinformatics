@@ -9,9 +9,55 @@ ref:
 - [DESeqDataSetFromHTSeqCount](https://www.rdocumentation.org/packages/DESeq/versions/1.24.0/topics/DESeqDataSet-class)
 
 ```{r}
-directory <- "/Users/andrewdavidson/googleUCSC/bme-237-appliedRNABioinformatics/homework/problemSet2/data"
 directory <- "/Users/andrewdavidson/googleUCSC/bme-237-appliedRNABioinformatics/homework/problemSet2/data/reads/htseq-counts.out"
-d <- list.files(directory)
-d
+sampleFilesList <- list.files(directory)
+sampleFilesList
+```
+
+```{r}
+# strsplit(d[[1]], "\\.")
+# sampleName <- strsplit(d[[1]], "\\.")[[1]][2]
+# print( sampleName )
+# treatment <- strsplit(d[[1]], "\\.")[[1]][3]
+# print( treatment)
+```
+
+```{r}
+# pre allocate list, this is faster than append
+n <- length(sampleFilesList)
+sampleNamesVec <- vector("list", n)
+conditionVec  <- vector("list", n)
+
+i <- 1
+for (fileName in sampleFilesList) {
+  #print( fileName)
+  
+  sampleName <- strsplit(fileName[[1]], "\\.")[[1]][3]
+  #print( sampleName )
+  #sampleNamesList <- c(sampleNamesList, sampleName)
+  sampleNamesVec[[i]] <- sampleName
+  
+  condition <- strsplit(fileName[[1]], "\\.")[[1]][4]
+  #print(condition)
+  #conditionList <- c(conditionList, condtion)
+  conditionVec[[i]] <- condition
+  
+  i <- i + 1
+}
+
+# flatten lists
+sampleNamesVec <- unlist(sampleNamesVec)
+conditionVec <- unlist(conditionVec)
+print( sampleNamesVec )
+print(conditionVec )
+```
+
+```{r}
+sampleTable <- data.frame(sampleName = sampleNamesVec,
+                          fileName = sampleFilesList,
+                          condition = conditionVec)
+sampleTable$condition <- factor(sampleTable$condition)
+
+sampleTable
 ```
 
