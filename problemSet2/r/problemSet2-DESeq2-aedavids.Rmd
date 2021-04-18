@@ -97,4 +97,30 @@ dds$condition <- relevel(dds$condition, ref = refference)
 
 
 ## Differential expression analysis
+With no additional arguments to results, the log2 fold change and Wald test p value will be for the last variable in the design formula, and if this is a factor, the comparison will be the last level of this variable over the reference level (see previous note on factor levels). However, the order of the variables of the design do not matter so long as the user specifies the comparison to build a results table for, using the name or contrast arguments of results.
+
+Details about the comparison are printed to the console, directly above the results table. The text, condition treated vs untreated, tells you that the estimates are of the logarithmic fold change log2(treated/untreated).
+
+```{r}
+dds <- DESeq(dds)
+res <- results(dds)
+res
+```
+
+
+## Question 3
+How many differentially expressed genes are there with an FDR < 1%?
+
+adj-pvalue is the "false discover rate"
+
+```{r}
+sum(res$padj < 0.1, na.rm=TRUE)
+```
+
+## Question 3
+The Trapnell et al. study highlights four genes that were found to have differential gene expression TBX3, CDC14B, CDK2, and ORC6. Were any of these genes found to be differentially expressed with an FDR < 1%? If any of these genes were not found to be differentially expressed, why do you think they were missed by this analysis?
+
+```{r}
+
+```
 
