@@ -85,49 +85,37 @@ do
 	# echo SRR493373_1.fastq | sed -e 's/_1/_2/'
 	f2=`echo $f1 | sed -e 's/_1/_2/' `
 	accession=`echo $f1 | cut -f 1 -d '_' `
-	hisat2Out="hisat2.GRCh38.${accession}.sam"
-	sortedSamOut=`echo $hisat2Out | sed -e 's/\.sam/\.sorted.sam/' `
+	prefix="star.GRCh38.26.bm.${accession}."
+	bamOut="star.GRCh38.26.bm.${accession}.sorted.bam"
 
-	if [ ! -f $hisat2Out ]; then
-	    echo hisat2 -p 12 \
-			-x $hisat2Idx \
-			-1 $f1  \
-			-2 $f2 \
-			-S $hisat2Out \
-			--known-splicesite-infile $spliceSites
 
-	    # make sure we recompute sorted sam file
-	    'rm' $sortedSamOut
+	if [ ! -f "${prefix}Aligned.out.bam" ]; then
+	    STAR --runThreadN 10 \
+		--outSAMtype BAM SortedByCoordinate \
+		--genomeDir $starIdxDir \
+		--outFileNamePrefix $prefix  \
+		--readFilesCommand zcat \
+		--readFilesIn $f1 $f2
+	    
+	    starExitStatus=$?
+	    printf star exit status: $starExitStatus for $prefix
+
 	else 
-	    echo skipping $hisat2Out it already exists
+	    echo skipping $bamOut it already exists
 	fi
-
-
-	# htseq-count reqires paired reads to be sort
-	if [ -f $hisat2Out -a ! -f $sortedSamOut ]; then
-	    echo samtools sort \
-		-@ 10 \
-		--output-fmt SAM \
-		-o $sortedSamOut \
-		$hisat2Out
-		
-	else
-	    echo skipping $sortedSamOut it already exists or $hisat2Out is missing
-	fi
-
        
-	htseqCountOut="htseq-count.GRCh38.${accession}.out"
-	if [ -f $sortedSamOut -a ! -f $htseqCountOut ]; then
-	    # htseq-count requires paired reads to be sorted
-	    echo htseq-count \
-		-r pos \
-		$sortedSamOut \
-		$gtf \
-		> $htseqCountOut
+	# aedwip htseqCountOut="htseq-count.GRCh38.${accession}.out"
+	# if [ -f $sortedSamOut -a ! -f $htseqCountOut ]; then
+	#     # htseq-count requires paired reads to be sorted
+	#     echo htseq-count \
+	# 	-r pos \
+	# 	$sortedSamOut \
+	# 	$gtf \
+	# 	> $htseqCountOut
 		
-	else
-	    echo skipping $htseqCountOut it already exists or $sortedSamOut is missing
-	fi
+	# else
+	#     echo skipping $htseqCountOut it already exists or $sortedSamOut is missing
+	# fi
 
     done
 done
