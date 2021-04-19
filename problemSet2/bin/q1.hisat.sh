@@ -22,6 +22,23 @@
 # april 2021
 #
 
+#
+# we did not find the differentialy expressed genes reported in 
+# Illumina MiSeq data from the Trapnell et al. Nature Biotechnology, 2013 paper using DESeq2. In
+# this study, they used Cuffdiff2 to identify genes affected by knockdown of the HOXA1 transcription 
+# factor in human primary lung fibroblasts. There are three biological replicates of a control
+#  siRNA knockdown and three biological replicates of knockdown of HOXA1.
+#
+# The GEO accession number for the experiment is GSE37703.  The MiSeq data is paired-end 26 bp. 
+#
+# could this be because "Mays Mohammed Salih"
+# Star is able to discover non-canonical splices and chimeric transcripts. The way it does that
+#  is by aligning MMPs to the first exon match and keep going down exons until it finds
+# the next match without the need to go back to the beginning. 
+# It also aligns to sequences with less than perfect matching which allows for some flexibility.  
+# This is an advantage over HISAT which requires matches of 28 or 8mers to extend. 
+#
+
 set -x
 module load hisat/hisat2-2.1.0
 
