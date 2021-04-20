@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH -p Instruction #128×24 # max nodes = 3, Intel nodes 128GBs / 2 x 12 cores# Instruction   # Partition name
+#SBATCH -p 128x24 # no time limit
 #SBATCH -J ps2.q1        # Job name
 #SBATCH --mail-user=aedavids@ucsc.edu
 #SBATCH --mail-type=ALL
 #SBATCH -o q1.star.sh.out    # Name of stdout output file
 #SBATCH -N 2        # Total number of nodes requested (128x24/Instructional only)
 #SBATCH -n 16        # Total number of mpi tasks requested per node
-#SBATCH -t 04:00:00  # Run Time (hh:mm:ss) - 4 hours (optional)
+#SBATCH -t infinite
 #SBATCH --mem=64G # Memory to be allocated PER NODE
 
 
@@ -64,7 +64,7 @@ if [ ! -d $starIdxDir ] ;
 then
     mkdir -p $starIdxDir
     STAR --runMode genomeGenerate \
-	runThreadN 10 \
+	runThreadN 20 \
 	--genomeDir $starIdxDir \
 	--genomeFastaFiles $genomeFastaFiles \
         --sjdbGTFfile $gtf \
