@@ -63,7 +63,7 @@ gtf=${probSet1Data}/gencode.v37.annotation.gtf
 if [ ! -d $starIdxDir ] ;
 then
     mkdir -p $starIdxDir
-    STAR --runMode genomeGenerate \
+    echo AEDWIP STAR --runMode genomeGenerate \
 	runThreadN 20 \
 	--genomeDir $starIdxDir \
 	--genomeFastaFiles $genomeFastaFiles \
@@ -71,7 +71,11 @@ then
 	--sjdbOverhang 26
 
     existStatus=$?
-    printf STAR genomeGenerate error status xxx $existStatus xxx
+    if [ $startExitStatus -ne 0 ]; then
+	printf ERROR star --runMode genomGenerate  exit status: $starExitStatus 
+	exit $starExitStatus
+    fi
+
 fi
 
 replicates="controls HOXA1_KD"
@@ -86,11 +90,12 @@ do
 	f2=`echo $f1 | sed -e 's/_1/_2/' `
 	accession=`echo $f1 | cut -f 1 -d '_' `
 	prefix="star.GRCh38.26.bm.${accession}."
-	bamOut="star.GRCh38.26.bm.${accession}.sorted.bam"
+	# star.GRCh38.26.bm.SRR493377.Aligned.sortedByCoord.out.bam
+	bamOut="star.GRCh38.26.bm.${accession}.Aligned.sortedByCoord.out.bam"
 
 
-	if [ ! -f "${prefix}Aligned.out.bam" ]; then
-	    STAR --runThreadN 10 \
+	if [ ! -f $bamOut ]; then
+	    echo AEDWIP STAR --runThreadN 10 \
 		--outSAMtype BAM SortedByCoordinate \
 		--genomeDir $starIdxDir \
 		--outFileNamePrefix $prefix  \
@@ -98,7 +103,10 @@ do
 		--readFilesIn $f1 $f2
 	    
 	    starExitStatus=$?
-	    printf star exit status: $starExitStatus for $prefix
+	    if [ $startExitStatus -ne 0 ]; then
+		printf ERROR star exit status: $starExitStatus for $prefix
+		exit $starExitStatus
+	    fi
 
 	else 
 	    echo skipping $bamOut it already exists
