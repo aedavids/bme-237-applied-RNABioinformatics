@@ -114,7 +114,8 @@ do
 	    echo skipping $sortedBamOut it already exists
 	fi
        
-	htseqCountOut="star-count.GRCh38.26.bm.${accession}.out"
+	htseqCountOut="htseq-count.star-count.GRCh38.26.bm.${p}.${accession}.out"
+
 	if [ -f $sortedBamOut -a ! -f $htseqCountOut ]; then
 	    # htseq-count requires paired reads to be sorted
 	    htseq-count \
@@ -122,6 +123,10 @@ do
 		$sortedBamOut \
 		$gtf \
 		> $htseqCountOut
+
+Error occured when reading beginning of SAM/BAM file.
+  'utf-8' codec can't decode byte 0x8b in position 1: invalid start byte
+  [Exception type: UnicodeDecodeError, raised in codecs.py:321]
 
 	    htseqCountExitStatus=$?
 	    if [ $htseqCountExitStatus -ne 0 ]; then
