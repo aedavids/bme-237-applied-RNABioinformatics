@@ -9,6 +9,7 @@ ref:
 -[https://bioconductor.org/packages/release/bioc/html/DESeq2.html](https://bioconductor.org/packages/release/bioc/html/DESeq2.html)
 - [DESeq2 vignettes](http://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#pre-filtering)
 - [DESeqDataSetFromHTSeqCount](https://www.rdocumentation.org/packages/DESeq/versions/1.24.0/topics/DESeqDataSet-class)
+- [selecting results](https://rdrr.io/bioc/DESeq2/man/results.html)
 
 ```{r}
 library("DESeq2")
@@ -117,10 +118,26 @@ adj-pvalue is the "false discover rate"
 sum(res$padj < 0.1, na.rm=TRUE)
 ```
 
-## Question 3
+## Question 4
 The Trapnell et al. study highlights four genes that were found to have differential gene expression TBX3, CDC14B, CDK2, and ORC6. Were any of these genes found to be differentially expressed with an FDR < 1%? If any of these genes were not found to be differentially expressed, why do you think they were missed by this analysis?
 
-```{r}
+- http://uswest.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000135111;r=12:114670255-114684175
+  - Gene: TBX3 ENSG00000135111
+ 
+- https://uswest.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000081377;r=9:96490241-96619843
+    - Gene: CDC14B ENSG00000081377
+ 
+- https://uswest.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000123374;r=12:55966781-55972789
+  - Gene: CDK2 ENSG00000123374
+ 
+- https://uswest.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000091651;r=16:46689643-46698394
+  - Gene: ORC6 ENSG00000091651
+ 
 
+```{r}
+genes_of_interest <- c("ENSG00000135111", "ENSG00000081377", 
+                                "ENSG00000123374", "ENSG00000091651" ) 
+
+res[example_genes_of_interest,][,c("log2FoldChange", "padj")]
 ```
 
