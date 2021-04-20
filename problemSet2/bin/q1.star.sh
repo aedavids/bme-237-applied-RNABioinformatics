@@ -42,6 +42,7 @@
 set -x
 module load star
 module load samtools/samtools-1.10
+printf "\n\n-----------------------\n"
 
 # reference files
 # gtf=/hb/home/aedavids/bme-237-applied-RNABioinformatics/problemSet1/data/gencode.v37.annotation.gtf
@@ -78,6 +79,8 @@ then
 
 fi
 
+printf "\n\n-----------------------\n"
+
 replicates="controls HOXA1_KD"
 for p in $replicates;
 do
@@ -91,10 +94,10 @@ do
 	accession=`echo $f1 | cut -f 1 -d '_' `
 	prefix="star.GRCh38.26.bm.${accession}."
 	# star.GRCh38.26.bm.SRR493377.Aligned.sortedByCoord.out.bam
-	bamOut="star.GRCh38.26.bm.${accession}.Aligned.sortedByCoord.out.bam"
+	sortedBamOut="star.GRCh38.26.bm.${accession}.Aligned.sortedByCoord.out.bam"
 
 
-	if [ ! -f $bamOut ]; then
+	if [ ! -f $sortedBamOut ]; then
 	    echo AEDWIP STAR --runThreadN 10 \
 		--outSAMtype BAM SortedByCoordinate \
 		--genomeDir $starIdxDir \
@@ -105,25 +108,30 @@ do
 	    starExitStatus=$?
 	    if [ $startExitStatus -ne 0 ]; then
 		printf ERROR star exit status: $starExitStatus for $prefix
-		exit $starExitStatus
 	    fi
 
 	else 
-	    echo skipping $bamOut it already exists
+	    echo skipping $sortedBamOut it already exists
 	fi
        
-	# aedwip htseqCountOut="htseq-count.GRCh38.${accession}.out"
-	# if [ -f $sortedSamOut -a ! -f $htseqCountOut ]; then
-	#     # htseq-count requires paired reads to be sorted
-	#     echo htseq-count \
-	# 	-r pos \
-	# 	$sortedSamOut \
-	# 	$gtf \
-	# 	> $htseqCountOut
+	htseqCountOut="star-count.GRCh38.26.bm.${accession}.out"
+	if [ -f $sortedBamOut -a ! -f $htseqCountOut ]; then
+	    # htseq-count requires paired reads to be sorted
+	    htseq-count \
+		-r pos \
+		$sortedBamOut \
+		$gtf \
+		> $htseqCountOut
+
+	    htseqCountExitStatus=$?
+	    if [ $htseqCountExitStatus -ne 0 ]; then
+		printf ERROR htseq-count exit status: $htseqCountExitStatus for $prefix
+	    fi
+	    
 		
-	# else
-	#     echo skipping $htseqCountOut it already exists or $sortedSamOut is missing
-	# fi
+	else
+	    echo skipping $htseqCountOut it already exists or $sortedBamOut is missing
+	fi
 
     done
 done
