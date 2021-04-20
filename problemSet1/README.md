@@ -113,7 +113,20 @@ You have count all the exon lengths. not easy. Go to ucsc genome browser. select
 
 3. transcript size is 2,542
 
-FPKM = 1000 / 40,000,000 / 2542 = 9.83477576711251e-09
+<span style="color:red"> AEDWIP FPKM = 1000 / 40,000,000 / 2542 = 9.83477576711251e-09</span>
+
+Angela's answer
+- 1000 = number of fragments
+
+- 2013, length of transcript in kilo bases
+  - ways to count
+    - take length of all exons (use exon coordinates)
+
+2013 / 1000 = 2.013
+
+final answer = 12.419274714356682  = 1000 / 40 / 2.013
+
+
 
 # question 6
 Some RNA-Seq analysis approaches involve aligning reads directly to spliced annotated transcript sequences, instead of against the genome. You decide to try this approach, particularly since you don’t care about unannotated alternative splicing events and are only interested in gene expression quantification.
@@ -640,3 +653,6 @@ The difference between the counts has to do with how framents are handled. For e
 
 Interesting notes about the plot there are some vertical lines and some horizontal lines. This suggests that there are some transcript where one method counted dramatically more fragments than the other. I wonder if there is something in common with these transcripts?
 
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbNTI4MTEzNzAwXX0=
+-->
