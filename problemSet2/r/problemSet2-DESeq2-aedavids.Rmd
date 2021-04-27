@@ -1,6 +1,10 @@
 ---
 title: "problemSet2-DESeq2-aedavids.Rmd"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
+  html_notebook: default
+  pdf_document: default
 ---
 
 Questions 2) Use DESeq2 to perform differential gene expression analysis comparing control replicates versus HOXA1 KD replicates. 
@@ -16,8 +20,8 @@ library("DESeq2")
 ```
 
 ```{r}
-directory <- "/Users/andrewdavidson/googleUCSC/bme-237-appliedRNABioinformatics/homework/problemSet2/data/reads/htseq-counts.out"
-sampleFilesList <- list.files(directory)
+dataDir <- "/Users/andrewdavidson/googleUCSC/bme-237-appliedRNABioinformatics/homework/problemSet2/htseq-count.out/"
+sampleFilesList <- list.files(dataDir)
 sampleFilesList
 ```
 
@@ -73,8 +77,8 @@ sampleTable
 
 ## create the DESeqDataSet
 ```{r}
-ddsHTSeq <- DESeqDataSetFromHTSeqCount(sampleTable, 
-                                  directory, 
+ddsHTSeq <- DESeqDataSetFromHTSeqCount(sampleTable=sampleTable, 
+                                  directory=dataDir, 
                                   design = ~ condition)
 ddsHTSeq
 ```
@@ -115,7 +119,7 @@ How many differentially expressed genes are there with an FDR < 1%?
 adj-pvalue is the "false discover rate"
 
 ```{r}
-sum(res$padj < 0.1, na.rm=TRUE)
+sum(res$padj < 0.01, na.rm=TRUE)
 ```
 
 ## Question 4
@@ -138,6 +142,6 @@ The Trapnell et al. study highlights four genes that were found to have differen
 genes_of_interest <- c("ENSG00000135111", "ENSG00000081377", 
                                 "ENSG00000123374", "ENSG00000091651" ) 
 
-res[example_genes_of_interest,][,c("log2FoldChange", "padj")]
+res[genes_of_interest,][,c("log2FoldChange", "padj")]
 ```
 
