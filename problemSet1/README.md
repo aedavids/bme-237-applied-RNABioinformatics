@@ -608,7 +608,7 @@ samtools sort ./data/hisat2.GRCh37.p13.ENCFF000IJ.bam  \
 ```
 
 count 
-<span style="color:red">BUG we have paired reads both sorted sam/bam files should have been pass on the same line. Do not call htseq-count twice</span>
+
 ```
 # https://bioinformatics.uconn.edu/resources-and-events/tutorials-2/rna-seq-tutorial-with-reference-genome/#
 # paired reads must be sorted. 
@@ -616,7 +616,7 @@ count
 # default assume data is stranded
 mkdir htseq-count.out
 
-!!!! BUG we have paired reads both sorted sam/bam files should have been pass on the same line. Do not call htseq-count twice
+
 htseq-count -r pos \
     ./ENCFF000IJ.STAR_GRCh37.p13_STAR.out/ENCFF000IJ.STAR_GRCh37.p13Aligned.out.sorted.sam \
     ./data/gencode.v37.annotation.gtf \
